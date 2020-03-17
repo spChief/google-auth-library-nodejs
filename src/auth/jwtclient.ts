@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {GoogleToken} from 'gtoken';
+import {GoogleToken} from '../gtoken';
 import * as stream from 'stream';
 
 import * as messages from '../messages';
@@ -359,10 +359,6 @@ export class JWT extends OAuth2Client implements IdTokenProvider {
   async getCredentials(): Promise<CredentialBody> {
     if (this.key) {
       return {private_key: this.key, client_email: this.email};
-    } else if (this.keyFile) {
-      const gtoken = this.createGToken();
-      const creds = await gtoken.getCredentials(this.keyFile);
-      return {private_key: creds.privateKey, client_email: creds.clientEmail};
     }
     throw new Error('A key or a keyFile must be provided to getCredentials.');
   }

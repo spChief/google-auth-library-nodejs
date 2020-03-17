@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {exec} from 'child_process';
-import * as fs from 'fs';
+// import {exec} from 'child_process';
+// import * as fs from 'fs';
 import {GaxiosOptions, GaxiosResponse} from 'gaxios';
 import * as gcpMetadata from 'gcp-metadata';
-import * as os from 'os';
-import * as path from 'path';
-import * as stream from 'stream';
+// import * as os from 'os';
+// import * as path from 'path';
+// import * as stream from 'stream';
 
 import {createCrypto} from '../crypto/crypto';
 import * as messages from '../messages';
@@ -185,9 +185,9 @@ export class GoogleAuth {
         async (resolve, reject) => {
           try {
             const projectId =
-              this.getProductionProjectId() ||
+              // this.getProductionProjectId() ||
               (await this.getFileProjectId()) ||
-              (await this.getDefaultServiceProjectId()) ||
+              // (await this.getDefaultServiceProjectId()) ||
               (await this.getGCEProjectId());
             this._cachedProjectId = projectId;
             if (!projectId) {
@@ -253,30 +253,30 @@ export class GoogleAuth {
     // Check for the existence of a local environment variable pointing to the
     // location of the credential file. This is typically used in local
     // developer scenarios.
-    credential = await this._tryGetApplicationCredentialsFromEnvironmentVariable(
-      options
-    );
-    if (credential) {
-      if (credential instanceof JWT) {
-        credential.scopes = this.scopes;
-      }
-      this.cachedCredential = credential;
-      projectId = await this.getProjectId();
-      return {credential, projectId};
-    }
+    // credential = await this._tryGetApplicationCredentialsFromEnvironmentVariable(
+    //   options
+    // );
+    // if (credential) {
+    //   if (credential instanceof JWT) {
+    //     credential.scopes = this.scopes;
+    //   }
+    //   this.cachedCredential = credential;
+    //   projectId = await this.getProjectId();
+    //   return {credential, projectId};
+    // }
 
     // Look in the well-known credential file location.
-    credential = await this._tryGetApplicationCredentialsFromWellKnownFile(
-      options
-    );
-    if (credential) {
-      if (credential instanceof JWT) {
-        credential.scopes = this.scopes;
-      }
-      this.cachedCredential = credential;
-      projectId = await this.getProjectId();
-      return {credential, projectId};
-    }
+    // credential = await this._tryGetApplicationCredentialsFromWellKnownFile(
+    //   options
+    // );
+    // if (credential) {
+    //   if (credential instanceof JWT) {
+    //     credential.scopes = this.scopes;
+    //   }
+    //   this.cachedCredential = credential;
+    //   projectId = await this.getProjectId();
+    //   return {credential, projectId};
+    // }
 
     // Determine if we're running on GCE.
     let isGCE;
@@ -319,68 +319,68 @@ export class GoogleAuth {
    * @returns Promise that resolves with the OAuth2Client or null.
    * @api private
    */
-  async _tryGetApplicationCredentialsFromEnvironmentVariable(
-    options?: RefreshOptions
-  ): Promise<JWT | UserRefreshClient | null> {
-    const credentialsPath =
-      process.env['GOOGLE_APPLICATION_CREDENTIALS'] ||
-      process.env['google_application_credentials'];
-    if (!credentialsPath || credentialsPath.length === 0) {
-      return null;
-    }
-    try {
-      return this._getApplicationCredentialsFromFilePath(
-        credentialsPath,
-        options
-      );
-    } catch (e) {
-      e.message = `Unable to read the credential file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable: ${e.message}`;
-      throw e;
-    }
-  }
+  // async _tryGetApplicationCredentialsFromEnvironmentVariable(
+  //   options?: RefreshOptions
+  // ): Promise<JWT | UserRefreshClient | null> {
+  //   const credentialsPath =
+  //     process.env['GOOGLE_APPLICATION_CREDENTIALS'] ||
+  //     process.env['google_application_credentials'];
+  //   if (!credentialsPath || credentialsPath.length === 0) {
+  //     return null;
+  //   }
+  //   try {
+  //     return this._getApplicationCredentialsFromFilePath(
+  //       credentialsPath,
+  //       options
+  //     );
+  //   } catch (e) {
+  //     e.message = `Unable to read the credential file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable: ${e.message}`;
+  //     throw e;
+  //   }
+  // }
 
   /**
    * Attempts to load default credentials from a well-known file location
    * @return Promise that resolves with the OAuth2Client or null.
    * @api private
    */
-  async _tryGetApplicationCredentialsFromWellKnownFile(
-    options?: RefreshOptions
-  ): Promise<JWT | UserRefreshClient | null> {
-    // First, figure out the location of the file, depending upon the OS type.
-    let location = null;
-    if (this._isWindows()) {
-      // Windows
-      location = process.env['APPDATA'];
-    } else {
-      // Linux or Mac
-      const home = process.env['HOME'];
-      if (home) {
-        location = path.join(home, '.config');
-      }
-    }
-    // If we found the root path, expand it.
-    if (location) {
-      location = path.join(
-        location,
-        'gcloud',
-        'application_default_credentials.json'
-      );
-      if (!fs.existsSync(location)) {
-        location = null;
-      }
-    }
-    // The file does not exist.
-    if (!location) {
-      return null;
-    }
-    // The file seems to exist. Try to use it.
-    const client = await this._getApplicationCredentialsFromFilePath(
-      location,
-      options
-    );
-    return client;
-  }
+  // async _tryGetApplicationCredentialsFromWellKnownFile(
+  //   options?: RefreshOptions
+  // ): Promise<JWT | UserRefreshClient | null> {
+  //   // First, figure out the location of the file, depending upon the OS type.
+  //   let location = null;
+  //   if (this._isWindows()) {
+  //     // Windows
+  //     location = process.env['APPDATA'];
+  //   } else {
+  //     // Linux or Mac
+  //     const home = process.env['HOME'];
+  //     if (home) {
+  //       location = path.join(home, '.config');
+  //     }
+  //   }
+  //   // If we found the root path, expand it.
+  //   if (location) {
+  //     location = path.join(
+  //       location,
+  //       'gcloud',
+  //       'application_default_credentials.json'
+  //     );
+  //     if (!fs.existsSync(location)) {
+  //       location = null;
+  //     }
+  //   }
+  //   // The file does not exist.
+  //   if (!location) {
+  //     return null;
+  //   }
+  //   // The file seems to exist. Try to use it.
+  //   const client = await this._getApplicationCredentialsFromFilePath(
+  //     location,
+  //     options
+  //   );
+  //   return client;
+  // }
 
   /**
    * Attempts to load default credentials from a file at the given path..
@@ -388,34 +388,34 @@ export class GoogleAuth {
    * @returns Promise that resolves with the OAuth2Client
    * @api private
    */
-  async _getApplicationCredentialsFromFilePath(
-    filePath: string,
-    options: RefreshOptions = {}
-  ): Promise<JWT | UserRefreshClient> {
-    // Make sure the path looks like a string.
-    if (!filePath || filePath.length === 0) {
-      throw new Error('The file path is invalid.');
-    }
+  // async _getApplicationCredentialsFromFilePath(
+  //   filePath: string,
+  //   options: RefreshOptions = {}
+  // ): Promise<JWT | UserRefreshClient> {
+  //   // Make sure the path looks like a string.
+  //   if (!filePath || filePath.length === 0) {
+  //     throw new Error('The file path is invalid.');
+  //   }
 
-    // Make sure there is a file at the path. lstatSync will throw if there is
-    // nothing there.
-    try {
-      // Resolve path to actual file in case of symlink. Expect a thrown error
-      // if not resolvable.
-      filePath = fs.realpathSync(filePath);
+  //   // Make sure there is a file at the path. lstatSync will throw if there is
+  //   // nothing there.
+  //   try {
+  //     // Resolve path to actual file in case of symlink. Expect a thrown error
+  //     // if not resolvable.
+  //     filePath = fs.realpathSync(filePath);
 
-      if (!fs.lstatSync(filePath).isFile()) {
-        throw new Error();
-      }
-    } catch (err) {
-      err.message = `The file at ${filePath} does not exist, or it is not a file. ${err.message}`;
-      throw err;
-    }
+  //     if (!fs.lstatSync(filePath).isFile()) {
+  //       throw new Error();
+  //     }
+  //   } catch (err) {
+  //     err.message = `The file at ${filePath} does not exist, or it is not a file. ${err.message}`;
+  //     throw err;
+  //   }
 
-    // Now open a read stream on the file, and parse it.
-    const readStream = fs.createReadStream(filePath);
-    return this.fromStream(readStream, options);
-  }
+  //   // Now open a read stream on the file, and parse it.
+  //   const readStream = fs.createReadStream(filePath);
+  //   return this.fromStream(readStream, options);
+  // }
 
   /**
    * Create a credentials instance using the given input options.
@@ -473,64 +473,64 @@ export class GoogleAuth {
    * @param inputStream The input stream.
    * @param callback Optional callback.
    */
-  fromStream(inputStream: stream.Readable): Promise<JWT | UserRefreshClient>;
-  fromStream(inputStream: stream.Readable, callback: CredentialCallback): void;
-  fromStream(
-    inputStream: stream.Readable,
-    options: RefreshOptions
-  ): Promise<JWT | UserRefreshClient>;
-  fromStream(
-    inputStream: stream.Readable,
-    options: RefreshOptions,
-    callback: CredentialCallback
-  ): void;
-  fromStream(
-    inputStream: stream.Readable,
-    optionsOrCallback: RefreshOptions | CredentialCallback = {},
-    callback?: CredentialCallback
-  ): Promise<JWT | UserRefreshClient> | void {
-    let options: RefreshOptions = {};
-    if (typeof optionsOrCallback === 'function') {
-      callback = optionsOrCallback;
-    } else {
-      options = optionsOrCallback;
-    }
-    if (callback) {
-      this.fromStreamAsync(inputStream, options).then(
-        r => callback!(null, r),
-        callback
-      );
-    } else {
-      return this.fromStreamAsync(inputStream, options);
-    }
-  }
+  // fromStream(inputStream: stream.Readable): Promise<JWT | UserRefreshClient>;
+  // fromStream(inputStream: stream.Readable, callback: CredentialCallback): void;
+  // fromStream(
+  //   inputStream: stream.Readable,
+  //   options: RefreshOptions
+  // ): Promise<JWT | UserRefreshClient>;
+  // fromStream(
+  //   inputStream: stream.Readable,
+  //   options: RefreshOptions,
+  //   callback: CredentialCallback
+  // ): void;
+  // fromStream(
+  //   inputStream: stream.Readable,
+  //   optionsOrCallback: RefreshOptions | CredentialCallback = {},
+  //   callback?: CredentialCallback
+  // ): Promise<JWT | UserRefreshClient> | void {
+  //   let options: RefreshOptions = {};
+  //   if (typeof optionsOrCallback === 'function') {
+  //     callback = optionsOrCallback;
+  //   } else {
+  //     options = optionsOrCallback;
+  //   }
+  //   if (callback) {
+  //     this.fromStreamAsync(inputStream, options).then(
+  //       r => callback!(null, r),
+  //       callback
+  //     );
+  //   } else {
+  //     return this.fromStreamAsync(inputStream, options);
+  //   }
+  // }
 
-  private fromStreamAsync(
-    inputStream: stream.Readable,
-    options?: RefreshOptions
-  ): Promise<JWT | UserRefreshClient> {
-    return new Promise((resolve, reject) => {
-      if (!inputStream) {
-        throw new Error(
-          'Must pass in a stream containing the Google auth settings.'
-        );
-      }
-      let s = '';
-      inputStream
-        .setEncoding('utf8')
-        .on('error', reject)
-        .on('data', chunk => (s += chunk))
-        .on('end', () => {
-          try {
-            const data = JSON.parse(s);
-            const r = this._cacheClientFromJSON(data, options);
-            return resolve(r);
-          } catch (err) {
-            return reject(err);
-          }
-        });
-    });
-  }
+  // private fromStreamAsync(
+  //   inputStream: stream.Readable,
+  //   options?: RefreshOptions
+  // ): Promise<JWT | UserRefreshClient> {
+  //   return new Promise((resolve, reject) => {
+  //     if (!inputStream) {
+  //       throw new Error(
+  //         'Must pass in a stream containing the Google auth settings.'
+  //       );
+  //     }
+  //     let s = '';
+  //     inputStream
+  //       .setEncoding('utf8')
+  //       .on('error', reject)
+  //       .on('data', chunk => (s += chunk))
+  //       .on('end', () => {
+  //         try {
+  //           const data = JSON.parse(s);
+  //           const r = this._cacheClientFromJSON(data, options);
+  //           return resolve(r);
+  //         } catch (err) {
+  //           return reject(err);
+  //         }
+  //       });
+  //   });
+  // }
 
   /**
    * Create a credentials instance using the given API key string.
@@ -549,52 +549,52 @@ export class GoogleAuth {
    * Determines whether the current operating system is Windows.
    * @api private
    */
-  private _isWindows() {
-    const sys = os.platform();
-    if (sys && sys.length >= 3) {
-      if (sys.substring(0, 3).toLowerCase() === 'win') {
-        return true;
-      }
-    }
-    return false;
-  }
+  // private _isWindows() {
+  //   const sys = os.platform();
+  //   if (sys && sys.length >= 3) {
+  //     if (sys.substring(0, 3).toLowerCase() === 'win') {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   /**
    * Run the Google Cloud SDK command that prints the default project ID
    */
-  private async getDefaultServiceProjectId(): Promise<string | null> {
-    return new Promise<string | null>(resolve => {
-      exec(
-        'gcloud config config-helper --format json',
-        (err, stdout, stderr) => {
-          if (!err && stdout) {
-            try {
-              const projectId = JSON.parse(stdout).configuration.properties.core
-                .project;
-              resolve(projectId);
-              return;
-            } catch (e) {
-              // ignore errors
-            }
-          }
-          resolve(null);
-        }
-      );
-    });
-  }
+  // private async getDefaultServiceProjectId(): Promise<string | null> {
+  //   return new Promise<string | null>(resolve => {
+  //     exec(
+  //       'gcloud config config-helper --format json',
+  //       (err, stdout, stderr) => {
+  //         if (!err && stdout) {
+  //           try {
+  //             const projectId = JSON.parse(stdout).configuration.properties.core
+  //               .project;
+  //             resolve(projectId);
+  //             return;
+  //           } catch (e) {
+  //             // ignore errors
+  //           }
+  //         }
+  //         resolve(null);
+  //       }
+  //     );
+  //   });
+  // }
 
   /**
    * Loads the project id from environment variables.
    * @api private
    */
-  private getProductionProjectId() {
-    return (
-      process.env['GCLOUD_PROJECT'] ||
-      process.env['GOOGLE_CLOUD_PROJECT'] ||
-      process.env['gcloud_project'] ||
-      process.env['google_cloud_project']
-    );
-  }
+  // private getProductionProjectId() {
+  //   return (
+  //     process.env['GCLOUD_PROJECT'] ||
+  //     process.env['GOOGLE_CLOUD_PROJECT'] ||
+  //     process.env['gcloud_project'] ||
+  //     process.env['google_cloud_project']
+  //   );
+  // }
 
   /**
    * Loads the project id from the GOOGLE_APPLICATION_CREDENTIALS json file.
@@ -616,12 +616,12 @@ export class GoogleAuth {
     }
 
     // Try to load a credentials file and read its project ID
-    const r = await this._tryGetApplicationCredentialsFromEnvironmentVariable();
-    if (r) {
-      return r.projectId;
-    } else {
+    // const r = await this._tryGetApplicationCredentialsFromEnvironmentVariable();
+    // if (r) {
+    //   return r.projectId;
+    // } else {
       return null;
-    }
+    // }
   }
 
   /**
@@ -706,10 +706,10 @@ export class GoogleAuth {
     if (!this.cachedCredential) {
       if (this.jsonContent) {
         this._cacheClientFromJSON(this.jsonContent, this.clientOptions);
-      } else if (this.keyFilename) {
-        const filePath = path.resolve(this.keyFilename);
-        const stream = fs.createReadStream(filePath);
-        await this.fromStreamAsync(stream, this.clientOptions);
+      // } else if (this.keyFilename) {
+      //   const filePath = path.resolve(this.keyFilename);
+      //   const stream = fs.createReadStream(filePath);
+      //   await this.fromStreamAsync(stream, this.clientOptions);
       } else {
         await this.getApplicationDefaultAsync(this.clientOptions);
       }

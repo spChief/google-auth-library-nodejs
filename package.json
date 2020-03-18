@@ -19,7 +19,7 @@
     "ecdsa-sig-formatter": "^1.0.11",
     "fast-text-encoding": "^1.0.0",
     "gaxios": "https://github.com/spChief/gaxios.git",
-    "gcp-metadata": "^3.4.0",
+    "gcp-metadata": "https://github.com/spChief/gcp-metadata.git",
     "jws": "^4.0.0",
     "lru-cache": "^5.0.0"
   },

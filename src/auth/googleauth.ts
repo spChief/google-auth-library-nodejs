@@ -12,13 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import {exec} from 'child_process';
-// import * as fs from 'fs';
 import {GaxiosOptions, GaxiosResponse} from 'gaxios';
 import * as gcpMetadata from 'gcp-metadata';
-// import * as os from 'os';
-// import * as path from 'path';
-// import * as stream from 'stream';
 
 import {createCrypto} from '../crypto/crypto';
 import * as messages from '../messages';
